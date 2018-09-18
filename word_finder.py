@@ -14,7 +14,7 @@ class TranslatorResult:
 
     def __eq__(self, other):
         return (self.meanings == other.meanings) and (self.examples == other.examples) and (
-                    self.mp3_full_path == other.mp3_full_path) and (self.image_full_path == other.image_full_path)
+                self.mp3_full_path == other.mp3_full_path) and (self.image_full_path == other.image_full_path)
 
 
 class WordTranslator(metaclass=abc.ABCMeta):
@@ -71,27 +71,75 @@ class WordTranslatorTest(unittest.TestCase):
         assert isinstance(result.image_full_path, str)
 
 
+def contains_all_results(result):
+    return result.meanings is not None and len(result.meanings) > 0 and result.examples is not None and \
+           len(result.examples) > 0 and result.mp3_full_path is not None and result.image_full_path is not None
+
+
+def combine_results(result, new_result):
+    if len(result.meanings) == 0:
+        result.meanings = new_result.meanings
+    if len(result.examples) == 0:
+        result.examples = new_result.examples
+    if result.mp3_full_path is None:
+        result.mp3_full_path = new_result.mp3_full_path
+    if result.image_full_path is None:
+        result.image_full_path = new_result.image_full_path
+    return result
+
+
 class Translator:
     def __init__(self, translators: List[WordTranslator]):
         self.translators = translators
 
     def find(self, word: str):
-        return self.translators[0].find(word)
+
+        result = TranslatorResult([], [], None, None)
+
+        for t in self.translators:
+
+            new_result = t.find(word)
+
+            if contains_all_results(new_result):
+                return new_result
+
+            result = combine_results(result, new_result)
+
+            if contains_all_results(result):
+                return result
+
+        return result
 
 
 class TranslatorTest(unittest.TestCase):
 
     def setUp(self):
         self.dummy_result = TranslatorResult(['palabra'],
-                                             ['Confio en tu palabra', 'No tengo palabras'],
+                                             ['Confio en tu palabra'],
                                              'mp3_full_path',
                                              'image_full_path')
-        word_translator_mock = MagicMock()
-        word_translator_mock.find.return_value = self.dummy_result
-        self.translator = Translator([word_translator_mock])
+        self.wt_1_mock = MagicMock()
+        self.wt_2_mock = MagicMock()
+        self.wt_3_mock = MagicMock()
+        self.translator = Translator([self.wt_1_mock, self.wt_2_mock, self.wt_3_mock])
 
-    def test_call_find_on_word_translators(self):
+    def test_should_call_find_on_first_word_translator(self):
+        self.wt_1_mock.find.return_value = self.dummy_result
         assert self.translator.find('word') == self.dummy_result
+
+    def test_should_call_find_until_getting_a_full_result(self):
+        self.wt_1_mock.find.return_value = TranslatorResult([], [], None, None)
+        self.wt_2_mock.find.return_value = self.dummy_result
+        assert self.translator.find('word') == self.dummy_result
+        assert not self.wt_3_mock.find.called
+
+    def test_should_collect_partial_results(self):
+        self.wt_1_mock.find.return_value = TranslatorResult(["palabra"], [], None, None)
+        self.wt_2_mock.find.return_value = TranslatorResult([], ["Confio en tu palabra"], "mp3_full_path",
+                                                            "image_full_path")
+        self.wt_3_mock.find.return_value = self.dummy_result
+        assert self.translator.find('word') == self.dummy_result
+        assert not self.wt_3_mock.find.called
 
 
 if __name__ == '__main__':
