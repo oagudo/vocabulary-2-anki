@@ -8,13 +8,13 @@ Python3. Dependencies can be installed with:
 
 ## How to build your own vocabulary deck for anki ?
 
-1) Create a Oxford developer account at https://developer.oxforddictionaries.com/
+1) Create an [Oxford developer account](https://developer.oxforddictionaries.com/)
 
-2) Modify the configuration file `configuration/config.py` to include your api_key and app_id obtained in step 1.
+2) Modify the configuration file `configuration/config.py` to include your api_key and app_id values obtained in step 1.
 
-3) Fill the vocabulary.txt file with the words that you would like to learn.
+3) Fill the `vocabulary.txt` file with the words that you would like to learn (one per line).
 
-4) Change the language settings in the configuration file using IANA two letters codes (https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry). They will be used to translate your vocabulary list from/to the selected languages.
+4) Change the language settings in the configuration file using [IANA two letters codes](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry). They will be used to translate your vocabulary list from/to the selected languages.
 
 5) run `python3 main.py` and wait for its completion
 
