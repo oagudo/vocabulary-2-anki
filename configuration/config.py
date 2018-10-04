@@ -1,8 +1,8 @@
 GLOBAL_CFG = {
 
     'language': {
-        'from': 'es',
-        'to': 'en'
+        'from': 'en',
+        'to': 'es'
     },
 
     'vocabulary_file_name': 'vocabulary.txt',
