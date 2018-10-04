@@ -17,7 +17,7 @@ class OxfordTranslator(TranslatorPlugin):
 
         t_result = TranslatorResult.empty()
 
-        # TRANSLATION
+        # Translations
         url = self.base_url + '/entries/' + self.from_lan + '/' + word + '/translations=' + self.to_lan
         r = requests.get(url, headers={'app_id': self.app_id, 'app_key': self.api_key})
 
@@ -62,7 +62,7 @@ class OxfordTranslator(TranslatorPlugin):
 
                             t_result.senses.append(new_sense)
 
-        # PRONUNCIATION AND MEANING
+        # Pronunciation and meaning
         url = self.base_url + '/entries/' + self.from_lan + '/' + word.lower()
         r = requests.get(url, headers={'app_id': self.app_id, 'app_key': self.api_key})
 

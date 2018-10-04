@@ -1,5 +1,5 @@
 from typing import List
-from vocabulary_builder.word_translator import TranslatorPlugin
+from vocabulary_builder.translator_plugin import TranslatorPlugin
 from vocabulary_builder.translator_result import TranslatorResult
 
 
