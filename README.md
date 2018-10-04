@@ -10,7 +10,7 @@ Python3. Dependencies can be installed with:
 
 1) Create an [Oxford developer account](https://developer.oxforddictionaries.com/)
 
-2) Modify the configuration file `configuration/config.py` to include your api_key and app_id values obtained in step 1.
+2) Modify the configuration file `configuration/config.py` to include your `api_key` and `app_id` values obtained in step 1.
 
 3) Fill the `vocabulary.txt` file with the words that you would like to learn (one per line).
 
