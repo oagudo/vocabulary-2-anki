@@ -14,6 +14,13 @@ class OxfordTranslator(TranslatorPlugin):
         super(OxfordTranslator, self).__init__('Oxford translator', from_lan, to_lan)
 
     def find(self, word: str) -> TranslatorResult:
+        try:
+            return self.find_impl(word)
+        except Exception as ex:
+            print("Oops!  There was an error during the translation of " + word + ". Error: " + str(ex))
+            return TranslatorResult.empty()
+
+    def find_impl(self, word: str) -> TranslatorResult:
 
         t_result = TranslatorResult.empty()
 

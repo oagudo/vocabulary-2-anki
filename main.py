@@ -61,7 +61,7 @@ for word in words:
 genanki.Package(vocabulary_deck, media_files=mp3_files).write_to_file(GLOBAL_CFG['anki']['deck_file_name'])
 
 if len(not_founds) > 0:
-    print("words not found :")
+    print("Could not found translations for the following words:")
     for nf in not_founds:
         print(nf)
 
